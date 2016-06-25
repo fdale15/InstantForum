@@ -1,6 +1,5 @@
-body {
-  background-color: green;
-  color: white;
+.bg {
+  background-color:#aaaaaa;
 }
 
 a {
@@ -20,8 +19,6 @@ a {
 
 .post-body {
   background-color:#fff;
-  border-radius:0 0 10px 10px;
-  border:solid #aaaaaa 1px;
   padding:15px;
 }
 
@@ -33,17 +30,53 @@ a {
   padding:25px;
 }
 
+.post-title {
+  font-size: 2em;
+}
+
+.post-content {
+  font-size: 1.5em;
+}
+
 .text-box {
   font-size:2em;
+  margin-top: 10px;
+  margin-bottom: 10px;
   height: 50px;
+  border-radius: 5px;
 }
 
 .ifbtn {
-  height: 50px;
-  background-color: #00aaff;
+  background-color: #005599;
+  border-radius: 10px;
+  padding:10px;
   color:#fff;
 }
 
 .ifbtn:hover {
   background-color: #aaddff;
+}
+
+.comment {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  background-color:#aaddff;
+  border-radius:5px;
+}
+
+.comment-author {
+  color: #005599;
+  font-size: 1.25em;
+}
+
+.comment-content {
+  font-size:1.1em;
+}
+
+.comment-container {
+  background-color: #00aaff;
+  padding:10px 0 15px 0;
+  border-radius:0 0 10px 10px;
+  border:solid #aaaaaa 1px;
 }
