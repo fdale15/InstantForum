@@ -7,6 +7,7 @@ angular.module('InstantForum', ['btford.socket-io'])
   .controller('PostController', function ($scope, ifsock) {
       $scope.text = "";
       $scope.author = "";
+      $scope.username = "";
       $scope.comment_content = "";
       $scope.posts = [];
 
@@ -72,6 +73,11 @@ angular.module('InstantForum', ['btford.socket-io'])
         else {
           alert('You must enter a name.');
         }
+      }
+
+      $scope.join = function () {
+        $scope.author = $scope.username;
+        console.log($scope.username);
       }
 
       var GetIndexOfPostForID = function (id) {
