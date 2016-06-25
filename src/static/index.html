@@ -5,17 +5,28 @@
   <link rel="stylesheet" type="text/css" href="./css/bootstrap.css"/>
 </head>
 <body class="col-lg-12" ng-controller="PostController">
-
+    <a ng-click="printposts()">TestingPrintposts</a>
     <!-- Posts Go Here !-->
     <div class="row post-container" >
-      <div ng-repeat="msg in messages" class="col-lg-3 col-md-6 col-sm-12 col-xs-12 post">
-        <div class="post-head">Author...Time?</div>
-        <div class="post-body">{{msg}}</div>
+      <div ng-repeat="post in posts" class="col-lg-3 col-md-6 col-sm-12 col-xs-12 post">
+        <div class="post-head">{{post.Author}}</div>
+        <div class="post-body">{{post.Content}}</div>
+        <div class="post-tail">
+        <div class="comment-container">
+          <div ng-repeat="comment in post.Comments" class="comment">
+            {{comment.Author}}  -  {{comment.Content}}
+          </div>
+          <input type="text" ng-model="$parent.comment_content"/>
+          <a class="ifbtn text-center" ng-click="comment(post.ID)">Comment</a>
+        </div>
+      </div>
       </div>
     </div>
 
     <!-- New Message Box !-->
     <div class="row">
+      <a>Handle</a>
+      <input class="text-box" type="text" ng-model="author"/>
       <input class="text-box col-lg-10 col-sm-12 col-xs-12" type="text" ng-model="text"/>
       <a class="ifbtn text-center col-lg-2 col-sm-12 col-xs-12" ng-click="send()">Send</a>
     </div>
