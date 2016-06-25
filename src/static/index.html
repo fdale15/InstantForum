@@ -4,31 +4,45 @@
   <link rel="stylesheet" type="text/css" href="./css/style.css"/>
   <link rel="stylesheet" type="text/css" href="./css/bootstrap.css"/>
 </head>
-<body class="col-lg-12" ng-controller="PostController">
-    <a ng-click="printposts()">TestingPrintposts</a>
-    <!-- Posts Go Here !-->
-    <div class="row post-container" >
-      <div ng-repeat="post in posts" class="col-lg-3 col-md-6 col-sm-12 col-xs-12 post">
-        <div class="post-head">{{post.Author}}</div>
-        <div class="post-body">{{post.Content}}</div>
-        <div class="post-tail">
-        <div class="comment-container">
-          <div ng-repeat="comment in post.Comments" class="comment">
-            {{comment.Author}}  -  {{comment.Content}}
+<body class="col-lg-12 bg" ng-controller="PostController">
+
+    <div ng-switch on="author || null">
+      <!-- Username Choice !-->
+      <div ng-switch-when="null">
+        <a class="col-lg-2">Name</a>
+        <input class="text-box col-lg-10" type="text" ng-model="$parent.username"/>
+        <a class="ifbtn text-center" ng-click="join()">Join Forum</a>
+      </div>
+
+      <div ng-switch-default>
+        <!-- Posts Go Here !-->
+        <div class="row post-container" >
+          <div ng-repeat="post in posts" class="col-lg-3 col-md-6 col-sm-12 col-xs-12 post">
+            <div class="post-head post-title">{{post.Author}}</div>
+            <div class="post-body post-content">{{post.Content}}</div>
+            <div class="post-tail">
+              <div class="comment-container">
+                <div ng-repeat="comment in post.Comments">
+                  <div class="comment col-lg-10 col-lg-offset-1">
+                    <span class="comment-author col-lg-12">{{comment.Author}}</span>
+                    <span class="comment-content col-lg-12">{{comment.Content}}</span>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <input type="text" class="col-lg-10 col-lg-offset-1 col-md-offset-0 col-md-12 col-sm-offset-0 col-sm-12 col-xs-12 col-xs-offset-0 text-box" ng-model="$parent.$parent.comment_content"/>
+                  <a class="ifbtn text-center" ng-click="comment(post.ID)">Comment</a>
+                </div>
+              </div>
+            </div>
           </div>
-          <input type="text" ng-model="$parent.comment_content"/>
-          <a class="ifbtn text-center" ng-click="comment(post.ID)">Comment</a>
+        </div>
+
+        <!-- New Message Box !-->
+        <div class="row">
+          <input class="text-box col-lg-10 col-sm-12 col-xs-12" type="text" ng-model="$parent.text"/>
+          <a class="ifbtn text-center col-lg-2 col-sm-12 col-xs-12" ng-click="send()">Send</a>
         </div>
       </div>
-      </div>
-    </div>
-
-    <!-- New Message Box !-->
-    <div class="row">
-      <a>Handle</a>
-      <input class="text-box" type="text" ng-model="author"/>
-      <input class="text-box col-lg-10 col-sm-12 col-xs-12" type="text" ng-model="text"/>
-      <a class="ifbtn text-center col-lg-2 col-sm-12 col-xs-12" ng-click="send()">Send</a>
     </div>
 
     <script type="text/javascript" src="./js/angular.js"></script>
