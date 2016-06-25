@@ -1,0 +1,49 @@
+body {
+  background-color: green;
+  color: white;
+}
+
+a {
+    font-size:32px;
+}
+
+.post {
+  padding-bottom: 20px;
+}
+
+.post-head {
+  background-color:#00aaff;
+  color:#fff;
+  padding:15px;
+  border-radius:10px 10px 0 0;
+}
+
+.post-body {
+  background-color:#fff;
+  border-radius:0 0 10px 10px;
+  border:solid #aaaaaa 1px;
+  padding:15px;
+}
+
+.post-container {
+  background-color:#aaddff;
+  border:solid #777777 2px;
+  border-radius: 25px;
+  margin:10px;
+  padding:25px;
+}
+
+.text-box {
+  font-size:2em;
+  height: 50px;
+}
+
+.ifbtn {
+  height: 50px;
+  background-color: #00aaff;
+  color:#fff;
+}
+
+.ifbtn:hover {
+  background-color: #aaddff;
+}
