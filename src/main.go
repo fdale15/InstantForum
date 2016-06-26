@@ -8,9 +8,12 @@ import (
   "github.com/googollee/go-socket.io"
   . "models/post"
   . "models/comment_package"
+  . "models/login_package"
+  . "models/user"
 )
 
 var posts []*Post = make([]*Post, 0)
+var users []*User = make([]*User, 0)
 
 func main() {
   StartWebserver(3000)
@@ -60,6 +63,27 @@ func SetupForumServer() *socketio.Server {
           p := GetPostForID(cp.PostID, posts)
           p.Comments = append(p.Comments, cp.Comment)
           so.BroadcastTo("forum", "comment post", comment)
+        })
+
+        so.On("login", func(user string) {
+          sentuser := GetUserForJSON(user)
+          storeduser := GetUserForUsername(sentuser.Username, users)
+
+          lp := new(Login_package)
+          lp.LoggedIn = false
+          lp.Username = sentuser.Username
+
+          //if the user has logged in before check for password, otherwise login and store password.
+          if storeduser != nil {
+            if storeduser.Password == sentuser.Password {
+              lp.LoggedIn = true
+            }
+          } else {
+            lp.LoggedIn = true
+            users = append(users, sentuser)
+          }
+
+          so.Emit("login", lp.ToJSONString())
         })
 
         so.On("disconnection", func() {

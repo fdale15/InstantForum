@@ -8,22 +8,20 @@ angular.module('InstantForum', ['btford.socket-io'])
       $scope.text = "";
       $scope.author = "";
       $scope.username = "";
+      $scope.password = "";
       $scope.posts = [];
 
       ifsock.on('init posts', function (posts) {
         console.log(posts);
         $scope.posts = JSON.parse(posts).posts;
       });
-
       //Listens for a new thread to be posted, then appends it to the posts
       ifsock.on('forum post', function (post) {
         post = JSON.parse(post);
         post.Comments = [];
-        post.CommentContent = "test";
         console.log(post);
         $scope.posts.push(post);
       });
-
       //Listens for a comment to be posted, then appends it to the correct posts comments.
       ifsock.on('comment post', function (comment_package) {
         console.log(comment_package);
@@ -33,6 +31,16 @@ angular.module('InstantForum', ['btford.socket-io'])
         console.log(post_idx);
         console.log($scope.posts[post_idx]);
       })
+      //Handles login response
+      ifsock.on('login', function (login_package) {
+        lp = JSON.parse(login_package);
+        console.log(lp);
+        if (lp.LoggedIn) {
+          $scope.author = lp.Username;
+        } else {
+          alert('Invalid username or password.');
+        }
+      });
 
       //Handles sending a new post to the server.
       $scope.send = function () {
@@ -80,9 +88,10 @@ angular.module('InstantForum', ['btford.socket-io'])
         }
       }
 
+      //Handles sending login request.
       $scope.join = function () {
-        $scope.author = $scope.username;
-        console.log($scope.username);
+        
+        ifsock.emit('login', JSON.stringify({username : $scope.username, password : $scope.password}));
       }
 
       var GetIndexOfPostForID = function (id) {
