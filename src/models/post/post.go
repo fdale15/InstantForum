@@ -18,27 +18,7 @@ type Post struct {
 
 //Returns a JSON string representation of the Post object.
 func (p Post) ToJSONString() string {
-  /*result := "{"
-
-  result += "ID:" + strconv.Itoa(p.ID) + ","
-  result += "Content:\"" + p.Content + "\","
-  result += "Author:\"" + p.Author + "\","
-
-  comments := "["
-  for _, post := range p.Comments {
-    comments += post.ToJSONString() + ","
-  }
-  if comments != "[" {
-    comments += comments[0:len([]rune(comments))-1]
-    comments += "]"
-    result += comments
-  }
-
-  result += "}"
-  return result*/
-
   jsondata, _ := json.Marshal(p)
-
   return string(jsondata)
 }
 
@@ -55,6 +35,23 @@ func NewPost(content string, author string, comments []Post) *Post {
   return post
 }
 
+//Returns JSON string with posts member populated with array of JSON post objects.
+func GetJSONForPosts(slice []*Post) string {
+  var result string = "{\"posts\":["
+  var items string = ""
+  for _, p := range slice {
+    items += p.ToJSONString() + ","
+  }
+  result += items
+  //Removes the extra comma if there are items in the list.
+  if items != "" {
+    result = result[0:len([]rune(result)) - 1]
+  }
+
+  result += "]}"
+  return result
+}
+
 //Returns a Post object from JSON representation
 func GetPostForJSON(jsondata string) *Post {
   p := new(Post)
@@ -62,6 +59,17 @@ func GetPostForJSON(jsondata string) *Post {
   if p.ID == 0 {
     count += 1
     p.ID = count
+  }
+  return p
+}
+
+//Returns a post if the ID provided matches any of the posts provided.
+func GetPostForID(id int, posts []*Post) *Post {
+  p := new(Post)
+  for _, post := range posts {
+    if post.ID == id {
+      p = post
+    }
   }
   return p
 }
