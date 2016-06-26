@@ -8,7 +8,6 @@ angular.module('InstantForum', ['btford.socket-io'])
       $scope.text = "";
       $scope.author = "";
       $scope.username = "";
-      $scope.comment_content = "";
       $scope.posts = [];
 
       ifsock.on('init posts', function (posts) {
@@ -20,6 +19,7 @@ angular.module('InstantForum', ['btford.socket-io'])
       ifsock.on('forum post', function (post) {
         post = JSON.parse(post);
         post.Comments = [];
+        post.CommentContent = "test";
         console.log(post);
         $scope.posts.push(post);
       });
@@ -57,17 +57,22 @@ angular.module('InstantForum', ['btford.socket-io'])
       //Handles sending a comment to the server.
       $scope.comment = function(postId) {
         if ($scope.author.length > 0) {
-          if ($scope.comment_content.length > 0) {
+          postIdx = GetIndexOfPostForID(postId);
+          CommentContent = $scope.posts[postIdx].CommentContent;
+          if (CommentContent.length > 0) {
             console.log("postID: " + postId);
+
+
             comment = {};
             comment.Author = $scope.author;
-            comment.Content = $scope.comment_content;
+            comment.Content = CommentContent;
 
             comment_package = { "PostID" : postId, "Comment" : comment };
             console.log(comment_package);
             ifsock.emit('comment post', JSON.stringify(comment_package))
-            $scope.posts[GetIndexOfPostForID(postId)].Comments.push(comment);
-            $scope.comment_content = "";
+
+            $scope.posts[postIdx].Comments.push(comment);
+            $scope.posts[postIdx].CommentContent = "";
           }
         }
         else {
