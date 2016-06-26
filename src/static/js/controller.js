@@ -90,8 +90,12 @@ angular.module('InstantForum', ['btford.socket-io'])
 
       //Handles sending login request.
       $scope.join = function () {
-        
         ifsock.emit('login', JSON.stringify({username : $scope.username, password : $scope.password}));
+      }
+
+      //Handles logging out.
+      $scope.logout = function () {
+        $scope.author = "";
       }
 
       var GetIndexOfPostForID = function (id) {

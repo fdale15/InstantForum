@@ -27,6 +27,7 @@ a {
   border:solid #777777 2px;
   border-radius: 25px;
   margin:10px;
+  margin-top:100px;
   padding:25px;
 }
 
@@ -79,4 +80,25 @@ a {
   padding:10px 0 15px 0;
   border-radius:0 0 10px 10px;
   border:solid #aaaaaa 1px;
+}
+
+.nav-container {
+  background-color:#003366;
+  padding-top:10px;
+
+}
+
+.nav-bar {
+
+}
+
+.nav-bar a {
+  color: #fff;
+}
+.nav-bar a:hover {
+  color: #fff;
+}
+
+.logo {
+  padding:10px;
 }

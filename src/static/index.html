@@ -5,10 +5,14 @@
   <link rel="stylesheet" type="text/css" href="./css/bootstrap.css"/>
 </head>
 <body class="col-lg-12 bg" ng-controller="PostController">
-
     <div ng-switch on="author || null">
       <!-- Username Choice !-->
       <div ng-switch-when="null">
+        <div class="nav-container col-lg-12">
+          <ul class="nav-bar">
+            <a>Instant Forum</a>
+          </ul>
+        </div>
         <a class="col-lg-2">Name</a>
         <input class="text-box col-lg-10" type="text" ng-model="$parent.username"/>
         <a class="col-lg-2">Password</a>
@@ -17,6 +21,14 @@
       </div>
 
       <div ng-switch-default>
+        <div class="nav-container col-lg-12">
+          <ul class="nav-bar col-lg-12">
+            <a class="col-lg-10 logo">Instant Forum</a>
+            <a class="col-lg-2 ifbtn text-center" ng-click="logout()">Logout</a>
+          </ul>
+        </div>
+        <br/>
+
         <!-- Posts Go Here !-->
         <div class="row post-container" >
           <div ng-repeat="post in posts" class="col-lg-3 col-md-6 col-sm-12 col-xs-12 post">
