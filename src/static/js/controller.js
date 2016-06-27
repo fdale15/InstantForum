@@ -42,6 +42,12 @@ angular.module('InstantForum', ['btford.socket-io'])
         }
       });
 
+      //Handles deletion of a post.
+      ifsock.on('delete', function (postID) {
+        console.log("delete event: " + postID);
+        $scope.posts = RemovePostByID(postID, $scope.posts);
+      })
+
       //Handles sending a new post to the server.
       $scope.send = function () {
         if ($scope.author.length > 0) {
@@ -53,7 +59,6 @@ angular.module('InstantForum', ['btford.socket-io'])
 
             console.log(post);
             ifsock.emit('forum post', JSON.stringify(post));
-            $scope.posts.push(post);
             $scope.text = "";
           }
         }
@@ -98,16 +103,30 @@ angular.module('InstantForum', ['btford.socket-io'])
         $scope.author = "";
       }
 
+      //Handles client deletion of a post.
+      $scope.delete = function (postId) {
+        console.log('delete function ' + postId)
+        ifsock.emit('delete', postId);
+      }
+
       var GetIndexOfPostForID = function (id) {
-        console.log(id);
         idx = -1;
         for (i in $scope.posts) {
-          console.log(i + " " + $scope.posts[i].ID);
           if ($scope.posts[i].ID == id) {
             idx = i;
             break;
           }
         }
         return idx;
+      }
+
+      var RemovePostByID = function (id, posts) {
+        psts = []
+        for (i in posts) {
+          if (posts[i].ID != id) {
+            psts.push(posts[i]);
+          }
+        }
+        return psts;
       }
   });

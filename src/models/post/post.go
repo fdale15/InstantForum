@@ -73,3 +73,24 @@ func GetPostForID(id int, posts []*Post) *Post {
   }
   return p
 }
+
+//Returns the index of a post for the ID given.
+func GetPostIdxForID(id int, posts []*Post) int {
+  i := -1
+  for idx, post := range posts {
+    if post.ID == id {
+      i = idx
+    }
+  }
+  return i
+}
+
+func RemoveFromPostSlice(id int, posts []*Post) []*Post{
+  p := make([]*Post, 0)
+  for _, post := range posts {
+    if post.ID != id {
+      p = append(p, post)
+    }
+  }
+  return p
+}

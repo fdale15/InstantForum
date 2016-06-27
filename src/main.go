@@ -49,16 +49,18 @@ func SetupForumServer() *socketio.Server {
         //Sets up the socket's forum post event.
         so.On("forum post", func(msg string) {
             p := GetPostForJSON(msg)
-            log.Println("emit:", msg)
+
+            log.Println("emit forum post:", msg)
             //Posts are recorded for future connections.
             posts = append(posts, p)
             //Posts are broadcast to everyone listening to the forum room.
-            so.BroadcastTo("forum", "forum post", msg)
+            so.BroadcastTo("forum", "forum post", p.ToJSONString())
+            so.Emit("forum post", p.ToJSONString())
         })
 
         //Sets up the socket's comment post event.
         so.On("comment post", func(comment string) {
-          log.Println("emit:", comment)
+          log.Println("emit comment post:", comment)
           cp := GetCommentPackageForJSON(comment)
           p := GetPostForID(cp.PostID, posts)
           p.Comments = append(p.Comments, cp.Comment)
@@ -76,14 +78,34 @@ func SetupForumServer() *socketio.Server {
           //if the user has logged in before check for password, otherwise login and store password.
           if storeduser != nil {
             if storeduser.Password == sentuser.Password {
+              storeduser.SocketID = so.Id()
               lp.LoggedIn = true
+              log.Println("Log in: " + storeduser.Username)
             }
           } else {
             lp.LoggedIn = true
+            sentuser.SocketID = so.Id()
             users = append(users, sentuser)
+            log.Println("New user: " + sentuser.Username)
           }
 
           so.Emit("login", lp.ToJSONString())
+        })
+
+        so.On("delete", func(msg int) {
+          postId := msg
+          post := GetPostForID(postId, posts)
+          user := GetUserForSocketID(so.Id())
+
+          if user != nil {
+            if post.Author == user.Username {
+              log.Println("emit delete: {post}")
+              log.Println(post)
+              posts = RemoveFromPostSlice(postId, posts)
+              so.BroadcastTo("forum", "delete", msg)
+              so.Emit("delete", msg)
+            }
+          }
         })
 
         so.On("disconnection", func() {
@@ -94,4 +116,14 @@ func SetupForumServer() *socketio.Server {
         log.Println("error:", err)
     })
     return server
+}
+
+func GetUserForSocketID(socketID string) *User {
+  var u *User = nil
+  for _, user := range users {
+    if user.SocketID == socketID {
+      u = user
+    }
+  }
+  return u
 }

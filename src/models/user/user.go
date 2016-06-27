@@ -7,6 +7,7 @@ import (
 type User struct {
   Username string
   Password string
+  SocketID string
 }
 
 func NewUser(username, password string) *User {
