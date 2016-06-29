@@ -95,7 +95,7 @@ func SetupForumServer() *socketio.Server {
         so.On("delete", func(msg int) {
           postId := msg
           post := GetPostForID(postId, posts)
-          user := GetUserForSocketID(so.Id())
+          user := GetUserForSocketID(so.Id(), users)
 
           if user != nil {
             if post.Author == user.Username {
