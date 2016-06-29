@@ -38,3 +38,13 @@ func GetUserForUsername(username string, usernames []*User) *User {
   }
   return user
 }
+
+func GetUserForSocketID(socketID string, users []*User) *User {
+  var u *User = nil
+  for _, user := range users {
+    if user.SocketID == socketID {
+      u = user
+    }
+  }
+  return u
+}

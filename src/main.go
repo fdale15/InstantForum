@@ -117,13 +117,3 @@ func SetupForumServer() *socketio.Server {
     })
     return server
 }
-
-func GetUserForSocketID(socketID string) *User {
-  var u *User = nil
-  for _, user := range users {
-    if user.SocketID == socketID {
-      u = user
-    }
-  }
-  return u
-}
