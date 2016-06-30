@@ -1,5 +1,7 @@
 package post
 
+/* The post package was created the model a post on the forum */
+
 import (
   "encoding/json"
 )
@@ -20,19 +22,6 @@ type Post struct {
 func (p Post) ToJSONString() string {
   jsondata, _ := json.Marshal(p)
   return string(jsondata)
-}
-
-//Creates a new post object.
-func NewPost(content string, author string, comments []Post) *Post {
-  count += 1
-  post := new(Post)
-  post.ID = count
-  post.Content = content
-  post.Author = author
-  post.Comments = make([]Post, 0)
-  copy(post.Comments, comments)
-
-  return post
 }
 
 //Returns JSON string with posts member populated with array of JSON post objects.
@@ -85,6 +74,7 @@ func GetPostIdxForID(id int, posts []*Post) int {
   return i
 }
 
+//Removes the post with the provided id from the provided slice of posts.
 func RemoveFromPostSlice(id int, posts []*Post) []*Post{
   p := make([]*Post, 0)
   for _, post := range posts {

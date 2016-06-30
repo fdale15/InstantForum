@@ -1,28 +1,31 @@
 package login_package
 
+/* The login_package package was created to
+allow the server to send the username logged in as
+and a value indicating whether the login attempt was
+successful or not.
+(This is not really a great way of handling a login.)*/
+
 import (
   "encoding/json"
 )
 
-type Login_package struct {
+type LoginPackage struct {
   Username string
   LoggedIn bool
 }
 
-func NewLoginPackage(username string, loggedin bool) *Login_package {
-  lp := new(Login_package)
-  lp.Username = username
-  lp.LoggedIn = loggedin
-  return lp
-}
-
-func GetLoginPackageForJSON(jsondata string) *Login_package {
-  lp := new(Login_package)
+//Returns a LoginPackage object.
+//Parameter takes a LoginPackage object represented as a JSON object.
+func GetLoginPackageForJSON(jsondata string) *LoginPackage {
+  lp := new(LoginPackage)
   json.Unmarshal([]byte(jsondata), lp)
   return lp
 }
 
-func (lp *Login_package) ToJSONString() string {
+//Member function of LoginPackage object.
+//It returns the JSON string representation of the login object.
+func (lp *LoginPackage) ToJSONString() string {
   jsondata, _ := json.Marshal(lp)
   return string(jsondata)
 }

@@ -12,20 +12,22 @@ import (
   . "models/user"
 )
 
+//These slices hold the posts of the forum and users that have logged in.
 var posts []*Post = make([]*Post, 0)
 var users []*User = make([]*User, 0)
 
+//The entry point of the program.
 func main() {
   StartWebserver(3000)
 }
 
 //Initilizes and starts the webserver on specified port.
 func StartWebserver(port int) {
-  //Sets up the Socket.io server to server on /socket.io/ path.
+  //Sets up the Socket.io server and sets http to use to handle requests on /socket.io/ path.
   server := SetupForumServer()
   http.Handle("/socket.io/", server)
 
-  //Sets up the default root to serve static files.
+  //Sets up the default index to serve static files.
   http.Handle("/", http.FileServer(http.Dir("./static")))
 
   //Starts the webserver listening on port 3000.
@@ -35,6 +37,7 @@ func StartWebserver(port int) {
 
 //Sets up the socket.io server for handling of forum posts.
 func SetupForumServer() *socketio.Server {
+  //Creates a new Socket.IO server object.
   server, err := socketio.NewServer(nil)
     if err != nil {
         log.Fatal(err)
@@ -66,12 +69,12 @@ func SetupForumServer() *socketio.Server {
           p.Comments = append(p.Comments, cp.Comment)
           so.BroadcastTo("forum", "comment post", comment)
         })
-
+        //Handles the login event.
         so.On("login", func(user string) {
           sentuser := GetUserForJSON(user)
           storeduser := GetUserForUsername(sentuser.Username, users)
 
-          lp := new(Login_package)
+          lp := new(LoginPackage)
           lp.LoggedIn = false
           lp.Username = sentuser.Username
 
